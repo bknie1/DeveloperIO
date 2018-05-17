@@ -1,3 +1,5 @@
+// When user is typing, bot will also be 'typing'.
+
 // REQUIRES
 const slack = require('slack'); // npm slack package
 
@@ -11,8 +13,9 @@ slack.rtm.connect(user, function(err, rtm) {
   if(err) return console.log("Error: Couldn't connect");
 
   var ws = websocket(rtm.url);
-  var typing = through(Write);
-  ws.pipe(typing).pipe(ws);
+  var typing = through(write);
+  ws.pipe(typing) // Says she's typing. But you can do more.
+  typing.pipe(ws) // The websocket.
   // We can do something similar to event listeners with streams.
   ws.on('data', function () {
     // By default we get back a buffer; an octet encoding of data.
